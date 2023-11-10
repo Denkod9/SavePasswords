@@ -22,8 +22,8 @@ class SavePasswords(QMainWindow):
 
     def init_ui(self):
         self.setWindowIcon(QIcon(resource_path("img/icon.jpg")))
-        self.img_save_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
-        self.img_generate_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
+        self.ui.img_save_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
+        self.ui.img_generate_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(resource_path("img/eye_hide.png")))
 
@@ -108,9 +108,9 @@ class SavePasswords(QMainWindow):
 
     # добовление Логина, оплисания и пароля в область для чтения паролей
     def add_to_show_password(self):
-        login = self.ui.login_edt.text()
+        login = self.ui.login_edt.text() if len(self.ui.login_edt.text()) != 0 else "———————————"
         description = self.ui.description_edt.text() if len(self.ui.description_edt.text()) != 0 else "———————————"
-        password = self.ui.password_edt.text()
+        password = self.ui.password_edt.text() if len(self.ui.password_edt.text()) != 0 else "———————————"
 
         row_position = self.ui.show_text_tbl.rowCount()
         self.ui.show_text_tbl.insertRow(row_position)

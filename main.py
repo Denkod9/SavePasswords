@@ -44,6 +44,8 @@ class SavePasswords(QMainWindow):
         self.ui.pass_show_btn.clicked.connect(self.replace_img_password_show_hide)
 
         self.ui.save_to_img.clicked.connect(self.save_to_file)
+
+        self.ui.clear_table_btn.clicked.connect(self.clear_table)
         # endregion
 
         # region Generate Password and Secret key
@@ -86,6 +88,11 @@ class SavePasswords(QMainWindow):
     # endregion
 
     # region Save and Read Password
+
+    # очистка таблицы
+    def clear_table(self):
+        self.ui.show_text_tbl.setRowCount(0)
+
     # сохранение файла по кнопке
     def save_to_file(self):
         key = self.ui.key_edt.text()

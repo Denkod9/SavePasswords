@@ -19,9 +19,9 @@ def resource_path(relative_path):
 
 
 # чтение текста с изображения
-def read_text_img(key) -> str:
+def read_text_img(self, key) -> str:
     try:
-        file_path = open_file(key)
+        file_path = open_file(self, key)
 
         encrypt_text = exifHeader.reveal(file_path)
         encrypt_text = encrypt_text.decode()
@@ -67,11 +67,11 @@ def text_to_table_data(text, table):
 
 
 # сохранение текста в изображение
-def save_text_to_img(text, key):
+def save_text_to_img(self, text, key):
     try:
         if len(text) == 0:
             raise ValueError(error_message("Файл не должен быть пустым"))
-        file_path = open_file(key)
+        file_path = open_file(self, key)
 
         encrypt_text = encrypt_message(key, text)
 
@@ -83,17 +83,18 @@ def save_text_to_img(text, key):
 
 
 # выбор файла для дальнейшей обработки
-def open_file(key) -> str:
+def open_file(self, key) -> str:
     # Проверяем, что ключ не является None и имеет правильную длину
     is_key = key is not None and len(key) == 44
     if not is_key:
         raise ValueError(error_message("Ключ не указан или не имеет правильную длину"))
 
-    file_dialog = QFileDialog()
-    file_dialog.setNameFilter("Images (*.jpg *.bmp *.jpeg);; *.jpg;; *.bmp;; *.jpeg")
-    file_dialog.setFileMode(QFileDialog.ExistingFile)
-    file_dialog.setViewMode(QFileDialog.List)
-    file_path = file_dialog.getOpenFileName()[0]
+    # file_dialog = QFileDialog()
+    # file_dialog.setNameFilter("Images (*.jpg *.bmp *.jpeg);; *.jpg;; *.bmp;; *.jpeg")
+    # file_dialog.setFileMode(QFileDialog.ExistingFile)
+    # file_dialog.setViewMode(QFileDialog.List)
+    # file_path = file_dialog.getOpenFileName()[0]
+    file_path, _ = QFileDialog.getOpenFileName(self, 'Выберите изображение', '', 'Image Files (*.jpeg *.jpg *.bmp)')
 
     if not file_path:
         raise ValueError(error_message("No such file"))

@@ -26,6 +26,7 @@ class SavePasswords(QMainWindow):
         self.ui.img_generate_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(resource_path("img/eye_hide.png")))
+        self.ui.pass_show_btn.setIcon(icon)
 
         menu_bar = QMenuBar(self)
         self.setMenuBar(menu_bar)
@@ -69,7 +70,7 @@ class SavePasswords(QMainWindow):
             try:
                 key = self.ui.key_edt.text()
 
-                decrypt_text = read_text_img(key)
+                decrypt_text = read_text_img(self, key)
                 text_to_table_data(decrypt_text, self.ui.show_text_tbl)
             except Exception as ex:
                 print(ex)
@@ -78,7 +79,7 @@ class SavePasswords(QMainWindow):
             key = self.ui.key_edt.text()
             text = table_data_to_text(self.ui.show_text_tbl)
 
-            save_text_to_img(text, key)
+            save_text_to_img(self, text, key)
 
         elif action.text() == "Exit":
             sys.exit()

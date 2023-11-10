@@ -91,7 +91,7 @@ class SavePasswords(QMainWindow):
         key = self.ui.key_edt.text()
         text = table_data_to_text(self.ui.show_text_tbl)
 
-        save_text_to_img(text, key)
+        save_text_to_img(self, text, key)
 
     # смена изображения и показ пароля по нажатию кнопки показа пароля
     def replace_img_password_show_hide(self):

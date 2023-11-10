@@ -1,11 +1,12 @@
 import cryptography
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
 
 from cryptography.fernet import Fernet
 from stegano import exifHeader
 from exceptions import error_message
 import sys
 import os
+import json
 
 import secrets
 
@@ -37,6 +38,32 @@ def read_text_img(key) -> str:
 
     except Exception as ex:
         print(ex)
+
+
+# преобразование тбличных данных в текст
+def table_data_to_text(table):
+    data = []
+    for row in range(table.rowCount()):
+        row_data = []
+        for column in range(table.columnCount()):
+            item = table.item(row, column)
+            if item is not None:
+                row_data.append(item.text())
+            else:
+                row_data.append("")
+        data.append(row_data)
+    return json.dumps(data)
+
+
+# преобразование текста в данные для таблицы
+def text_to_table_data(text, table):
+    table.clearContents()
+    data = json.loads(text)
+    table.setRowCount(len(data))
+    table.setColumnCount(len(data[0]))
+    for row, row_data in enumerate(data):
+        for column, text in enumerate(row_data):
+            table.setItem(row, column, QTableWidgetItem(text))
 
 
 # сохранение текста в изображение
@@ -74,7 +101,8 @@ def open_file(key) -> str:
     # Проверка, является ли выбранный файл изображением по расширению
     allowed_extensions = (".jpg", ".bmp", ".jpeg")
     if not file_path.lower().endswith(allowed_extensions):
-        raise ValueError(error_message("Выбранный файл не может быть использовн"))
+        raise ValueError(error_message("Выбранный файл не может быть использован.\n"
+                                       "Попробуйте следующие форматы: '.jpg', '.jpeg', '.bmp'"))
 
     return file_path
 

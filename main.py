@@ -1,11 +1,12 @@
 import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QTableWidgetItem
 from PyQt5.QtGui import QIcon
 from design import Ui_MainWindow
 
-from func import create_new, generate_key, read_secret_key, save_text_to_img, read_text_img, resource_path
+from func import (create_new, generate_key, read_secret_key, save_text_to_img,
+                  read_text_img, resource_path, table_data_to_text, text_to_table_data)
 from string import ascii_lowercase, ascii_uppercase, digits, punctuation
 
 
@@ -21,6 +22,11 @@ class SavePasswords(QMainWindow):
 
     def init_ui(self):
         self.setWindowIcon(QIcon(resource_path("img/icon.jpg")))
+        self.img_save_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
+        self.img_generate_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(resource_path("img/eye_hide.png")))
+
         menu_bar = QMenuBar(self)
         self.setMenuBar(menu_bar)
 
@@ -54,22 +60,23 @@ class SavePasswords(QMainWindow):
         self.ui.key_generate_btn.clicked.connect(self.show_secret_key)
         # endregion
 
-    # TODO: 4) при нажатии сгенерировать ключ выбор места куда сохранять файл с ключом
-
     # region Функции выбора меню
     @QtCore.pyqtSlot()
     def action_clicked(self):
         action = self.sender()
 
         if action.text() == "Open":
-            key = self.ui.key_edt.text()
+            try:
+                key = self.ui.key_edt.text()
 
-            decrypt_text = read_text_img(key)
-            self.ui.show_passwords_tedt.setText(decrypt_text)
+                decrypt_text = read_text_img(key)
+                text_to_table_data(decrypt_text, self.ui.show_text_tbl)
+            except Exception as ex:
+                print(ex)
 
         elif action.text() == "Save":
             key = self.ui.key_edt.text()
-            text = self.ui.show_passwords_tedt.toPlainText()
+            text = table_data_to_text(self.ui.show_text_tbl)
 
             save_text_to_img(text, key)
 
@@ -81,7 +88,7 @@ class SavePasswords(QMainWindow):
     # сохранение файла по кнопке
     def save_to_file(self):
         key = self.ui.key_edt.text()
-        text = self.ui.show_passwords_tedt.toPlainText()
+        text = table_data_to_text(self.ui.show_text_tbl)
 
         save_text_to_img(text, key)
 
@@ -102,24 +109,19 @@ class SavePasswords(QMainWindow):
     # добовление Логина, оплисания и пароля в область для чтения паролей
     def add_to_show_password(self):
         login = self.ui.login_edt.text()
-        description = self.ui.description_edt.text()
+        description = self.ui.description_edt.text() if len(self.ui.description_edt.text()) != 0 else "———————————"
         password = self.ui.password_edt.text()
 
-        len_login = len(login)
-        len_description = len(description) if len(description) != 0 else 25
-        len_password = len(password)
+        row_position = self.ui.show_text_tbl.rowCount()
+        self.ui.show_text_tbl.insertRow(row_position)
 
-        if len(login) != 0 or len(password) != 0:
-            if len(description) == 0:
-                description = "—" * 15
-            text = (f"┌{'—' * len_login}{'—' * len_description}{'—' * len_password}┐\n"
-                    f"\t{login} | {description} | {password}\n"
-                    f"└{'—' * len_login}{'—' * len_description}{'—' * len_password}┘\n")
+        self.ui.show_text_tbl.setItem(row_position, 0, QTableWidgetItem(login))
+        self.ui.show_text_tbl.setItem(row_position, 1, QTableWidgetItem(description))
+        self.ui.show_text_tbl.setItem(row_position, 2, QTableWidgetItem(password))
 
-            self.ui.show_passwords_tedt.insertPlainText(text)
-            self.ui.login_edt.setText("")
-            self.ui.description_edt.setText("")
-            self.ui.password_edt.setText("")
+        self.ui.login_edt.setText("")
+        self.ui.description_edt.setText("")
+        self.ui.password_edt.setText("")
     # endregion
 
     # region Generate Password and Secret key

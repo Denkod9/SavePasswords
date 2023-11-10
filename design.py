@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Passwords.ui'
+# Form implementation generated from reading ui file 'Passwords_table.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -9,7 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from func import resource_path
 
 
 class Ui_MainWindow(object):
@@ -95,6 +94,21 @@ class Ui_MainWindow(object):
 "\n"
 "QSlider::sub-page:horizontal {\n"
 "    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #66a, stop:1 #55c);\n"
+"}\n"
+"\n"
+"QTableWidget {\n"
+"        background-color: #f2f2f2;\n"
+"        border: 1px solid #ccc;\n"
+"        border-radius: 10px;\n"
+"        padding: 5px\n"
+"}\n"
+"QTableWidget QHeaderView::section {\n"
+"        background-color: #d1d1d1;\n"
+"        border: none;\n"
+"        font-weight: bold;\n"
+"}\n"
+"QTableWidget::item {\n"
+"        padding: 5px;\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -129,7 +143,7 @@ class Ui_MainWindow(object):
         self.img_save_tab.setFrameShadow(QtWidgets.QFrame.Plain)
         self.img_save_tab.setText("")
         self.img_save_tab.setTextFormat(QtCore.Qt.AutoText)
-        self.img_save_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
+        self.img_save_tab.setPixmap(QtGui.QPixmap("img/new.jpg"))
         self.img_save_tab.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignVCenter)
         self.img_save_tab.setObjectName("img_save_tab")
         self.edit_fields_box = QtWidgets.QGroupBox(self.save_passwords_tab)
@@ -184,7 +198,7 @@ class Ui_MainWindow(object):
         self.pass_show_btn.setStyleSheet("")
         self.pass_show_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(resource_path("img/eye_hide.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("img/eye_hide.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pass_show_btn.setIcon(icon)
         self.pass_show_btn.setObjectName("pass_show_btn")
         self.gridLayout.addWidget(self.pass_show_btn, 4, 1, 1, 1)
@@ -207,28 +221,6 @@ class Ui_MainWindow(object):
         self.login_edt.setCursorMoveStyle(QtCore.Qt.LogicalMoveStyle)
         self.login_edt.setObjectName("login_edt")
         self.gridLayout.addWidget(self.login_edt, 0, 0, 1, 1)
-        self.show_passwords_tedt = QtWidgets.QTextEdit(self.save_passwords_tab)
-        self.show_passwords_tedt.setGeometry(QtCore.QRect(560, 40, 481, 581))
-        font = QtGui.QFont()
-        font.setFamily("Sitka Text")
-        font.setPointSize(14)
-        self.show_passwords_tedt.setFont(font)
-        self.show_passwords_tedt.setStyleSheet("")
-        self.show_passwords_tedt.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.show_passwords_tedt.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.show_passwords_tedt.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
-        self.show_passwords_tedt.setAutoFormatting(QtWidgets.QTextEdit.AutoNone)
-        self.show_passwords_tedt.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
-        self.show_passwords_tedt.setObjectName("show_passwords_tedt")
-        self.background_show_pass_lbl = QtWidgets.QLabel(self.save_passwords_tab)
-        self.background_show_pass_lbl.setGeometry(QtCore.QRect(549, 39, 501, 591))
-        self.background_show_pass_lbl.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"border: 1px solid #ccc;\n"
-"border-radius: 10px;\n"
-"padding: 5px;\n"
-"")
-        self.background_show_pass_lbl.setText("")
-        self.background_show_pass_lbl.setObjectName("background_show_pass_lbl")
         self.key_edt = QtWidgets.QLineEdit(self.save_passwords_tab)
         self.key_edt.setGeometry(QtCore.QRect(40, 670, 461, 42))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -263,20 +255,53 @@ class Ui_MainWindow(object):
         self.add_to_list_btn.setFont(font)
         self.add_to_list_btn.setStyleSheet("")
         self.add_to_list_btn.setObjectName("add_to_list_btn")
-        self.img_save_tab.raise_()
-        self.edit_fields_box.raise_()
-        self.background_show_pass_lbl.raise_()
-        self.show_passwords_tedt.raise_()
-        self.key_edt.raise_()
-        self.save_to_img.raise_()
-        self.add_to_list_btn.raise_()
+        self.show_text_tbl = QtWidgets.QTableWidget(self.save_passwords_tab)
+        self.show_text_tbl.setGeometry(QtCore.QRect(545, 51, 511, 521))
+        font = QtGui.QFont()
+        font.setFamily("Sitka Text")
+        font.setPointSize(12)
+        self.show_text_tbl.setFont(font)
+        self.show_text_tbl.setAlternatingRowColors(True)
+        self.show_text_tbl.setColumnCount(3)
+        self.show_text_tbl.setObjectName("show_text_tbl")
+        self.show_text_tbl.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Sitka Text")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.show_text_tbl.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Sitka Text")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.show_text_tbl.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Sitka Text")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.show_text_tbl.setHorizontalHeaderItem(2, item)
+        self.show_text_tbl.horizontalHeader().setCascadingSectionResizes(False)
+        self.show_text_tbl.horizontalHeader().setDefaultSectionSize(150)
+        self.show_text_tbl.horizontalHeader().setSortIndicatorShown(False)
+        self.show_text_tbl.horizontalHeader().setStretchLastSection(True)
+        self.show_text_tbl.verticalHeader().setCascadingSectionResizes(False)
+        self.show_text_tbl.verticalHeader().setDefaultSectionSize(60)
         self.tabWidget.addTab(self.save_passwords_tab, "")
         self.generate_password_tab = QtWidgets.QWidget()
         self.generate_password_tab.setObjectName("generate_password_tab")
         self.img_generate_tab = QtWidgets.QLabel(self.generate_password_tab)
         self.img_generate_tab.setGeometry(QtCore.QRect(0, 0, 1100, 800))
         self.img_generate_tab.setText("")
-        self.img_generate_tab.setPixmap(QtGui.QPixmap(resource_path("img/new.jpg")))
+        self.img_generate_tab.setPixmap(QtGui.QPixmap("img/new.jpg"))
         self.img_generate_tab.setAlignment(QtCore.Qt.AlignCenter)
         self.img_generate_tab.setObjectName("img_generate_tab")
         self.generate_key_gbx = QtWidgets.QGroupBox(self.generate_password_tab)
@@ -436,6 +461,12 @@ class Ui_MainWindow(object):
         self.key_edt.setPlaceholderText(_translate("MainWindow", "Key"))
         self.save_to_img.setText(_translate("MainWindow", "Сохранить"))
         self.add_to_list_btn.setText(_translate("MainWindow", "Добавить в список"))
+        item = self.show_text_tbl.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Login"))
+        item = self.show_text_tbl.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Description"))
+        item = self.show_text_tbl.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Password"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.save_passwords_tab), _translate("MainWindow", "Save Passwords"))
         self.generate_key_gbx.setTitle(_translate("MainWindow", "Generate Key"))
         self.key_generate_btn.setText(_translate("MainWindow", "Создать ключ"))

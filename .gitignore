@@ -153,4 +153,5 @@ cython_debug/
 __pycache__/
 output/
 secret.key
+secret.txt
 design_old.py

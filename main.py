@@ -8,6 +8,7 @@ from design import Ui_MainWindow
 from func import (create_new, generate_key, read_secret_key, save_text_to_img,
                   read_text_img, resource_path, table_data_to_text, text_to_table_data)
 from string import ascii_lowercase, ascii_uppercase, digits, punctuation
+from exceptions import error_message
 
 
 class SavePasswords(QMainWindow):
@@ -138,27 +139,36 @@ class SavePasswords(QMainWindow):
         self.ui.len_pass_edt.setText(str(self.ui.len_pass_slider.value()))
 
     def update_slider(self):
-        value = int(self.ui.len_pass_edt.text())
-        self.ui.len_pass_slider.setValue(value)
+        if self.ui.len_pass_edt.text() == "":
+            self.ui.len_pass_edt.setText("1")
+        try:
+            value = int(self.ui.len_pass_edt.text())
+            self.ui.len_pass_slider.setValue(value)
+        except Exception as ex:
+            print(type(ex))
 
     # генерация пароля учитывая включенные ф-ии
     def set_password(self):
-        chars = ""
-        if self.ui.digits_cbx.isChecked():
-            chars += digits
+        try:
+            chars = ""
 
-        if self.ui.lower_cbx.isChecked():
-            chars += ascii_lowercase
+            if self.ui.digits_cbx.isChecked():
+                chars += digits
 
-        if self.ui.upper_cbx.isChecked():
-            chars += ascii_uppercase
+            if self.ui.lower_cbx.isChecked():
+                chars += ascii_lowercase
 
-        if self.ui.symbol_cbx.isChecked():
-            chars += punctuation
+            if self.ui.upper_cbx.isChecked():
+                chars += ascii_uppercase
 
-        length = int(self.ui.len_pass_slider.value())
-        generated_password = create_new(length=length, characters=chars)
-        self.ui.generate_password_edt.setText(generated_password)
+            if self.ui.symbol_cbx.isChecked():
+                chars += punctuation
+
+            length = int(self.ui.len_pass_slider.value())
+            generated_password = create_new(length=length, characters=chars)
+            self.ui.generate_password_edt.setText(generated_password)
+        except IndexError:
+            error_message("Выберите хотябы один параметр для генерации пароля")
 
     # создать ключ, сохранить его и показать
     def show_secret_key(self):

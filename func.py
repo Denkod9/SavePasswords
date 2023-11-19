@@ -78,6 +78,8 @@ def save_text_to_img(self, text, key):
         file_name = "_passwords.".join(file_path.split("."))
         exifHeader.hide(file_path, file_name, encrypt_text)
 
+        generate_key_file(file_name, key)
+
     except Exception as ex:
         print(ex)
 
@@ -89,21 +91,16 @@ def open_file(self, key) -> str:
     if not is_key:
         raise ValueError(error_message("Ключ не указан или не имеет правильную длину"))
 
-    # file_dialog = QFileDialog()
-    # file_dialog.setNameFilter("Images (*.jpg *.bmp *.jpeg);; *.jpg;; *.bmp;; *.jpeg")
-    # file_dialog.setFileMode(QFileDialog.ExistingFile)
-    # file_dialog.setViewMode(QFileDialog.List)
-    # file_path = file_dialog.getOpenFileName()[0]
-    file_path, _ = QFileDialog.getOpenFileName(self, 'Выберите изображение', '', 'Image Files (*.jpeg *.jpg *.bmp)')
+    file_path, _ = QFileDialog.getOpenFileName(self, 'Выберите изображение', '', 'Image Files (*.jpeg *.jpg)')
 
     if not file_path:
         raise ValueError(error_message("No such file"))
 
     # Проверка, является ли выбранный файл изображением по расширению
-    allowed_extensions = (".jpg", ".bmp", ".jpeg")
+    allowed_extensions = (".jpg", ".jpeg")
     if not file_path.lower().endswith(allowed_extensions):
         raise ValueError(error_message("Выбранный файл не может быть использован.\n"
-                                       "Попробуйте следующие форматы: '.jpg', '.jpeg', '.bmp'"))
+                                       "Попробуйте следующие форматы: '.jpg', '.jpeg'"))
 
     return file_path
 
@@ -112,6 +109,18 @@ def open_file(self, key) -> str:
 def generate_key():
     key = Fernet.generate_key()
     with open("secret.key", "wb") as key_file:
+        key_file.write(key)
+
+
+# ключ сохраняется рядом с картинкой
+def generate_key_file(filename, key):
+    test = [".jpg", ".jpeg"]
+    for ext in test:
+        if filename.endswith(ext):
+            filename = filename[:-len(ext)]
+            break
+
+    with open(f"{filename}.txt", "w") as key_file:
         key_file.write(key)
 
 

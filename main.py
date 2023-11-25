@@ -4,6 +4,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QTableWidgetItem
 from PyQt5.QtGui import QIcon
 from design import Ui_MainWindow
+from loader import PreLoader
+from PyQt5.QtCore import QTimer
 
 from func import (create_new, generate_key, read_secret_key, save_text_to_img,
                   read_text_img, resource_path, table_data_to_text, text_to_table_data)
@@ -181,7 +183,12 @@ class SavePasswords(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    splash = PreLoader()
+    splash.show()
+
     window = SavePasswords()
+    splash.finish(window)
     window.show()
 
     sys.exit(app.exec_())
